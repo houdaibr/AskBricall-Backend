@@ -75,7 +75,50 @@ public class RealisationController {
 		}
 		return list;
 	}
+	@GetMapping("/categories/categorie")
+	public List<String> getCategoriesByresearch(@RequestParam(value = "research") String research){
+		List<String> list=new ArrayList<>();
+		List<Realisation> list1=realisationService.getAllRealisations();
+		for(int i=0;i<list1.size();i++) {
+			String[] list2=list1.get(i).getDescription().split(" ");
+			if(list1.get(i).getCategory().equals(research)) list.add(list1.get(i).getCategory());
+			else {
+				for (String a : list2) {
+					if(a.equals(research)) list.add(list1.get(i).getCategory());
+				}
+			}	
+		}
+		Set<String> set=new LinkedHashSet<String>(list);
+		list=new ArrayList<>(set);
+		return list;
+	}
 	
+	@GetMapping("/realisations/{research}")
+	public List<Realisation> getRealisationsByresearch(@PathVariable String research,@RequestParam(value = "categorie") String categorie){
+		List<Realisation> list=new ArrayList<>();
+		List<Realisation> list1=this.getRealisationsCategorie(categorie);
+		for(int i=0;i<list1.size();i++) {
+			if(list1.get(i).getCategory().equals(research)) list.add(list1.get(i));
+			else {
+				String[] list2=list1.get(i).getDescription().split(" ");
+				for (String a : list2) {
+					String[] list3=research.split(" ");
+					if(list3.length==1) {
+						if(a.equals(research)) list.add(list1.get(i));
+					}
+					else {
+						for (String b : list3) {
+							if(b.equals(a)) {
+								list.add(list1.get(i));
+								break;}
+						}
+					}
+					
+			}}}
+		Set<Realisation> set=new LinkedHashSet<>(list);
+		list=new ArrayList<>(set);
+		return list;
+	}
 	@GetMapping("/categories/{categorie}")
 	public List<Realisation> getRealisationsCategorie(@PathVariable String categorie){
 		List<Realisation> list=new ArrayList<>();
