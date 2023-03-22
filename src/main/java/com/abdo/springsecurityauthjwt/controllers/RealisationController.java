@@ -94,14 +94,24 @@ public class RealisationController {
 			if(list1.get(i).getCategory().equals(research)) list.add(list1.get(i).getCategory());
 			else {
 				for (String a : list2) {
-					if(a.equals(research)) list.add(list1.get(i).getCategory());
-				}
-			}	
-		}
+					String[] list3=research.split(" ");
+					if(list3.length==1) {
+						if(a.equals(research)) list.add(list1.get(i).getCategory());	
+					}
+					else {
+						for (String b : list3) {
+							if(b.equals(a)) {
+								list.add(list1.get(i).getCategory());
+								;}
+						}
+					}
+				}	
+					
+			}}	
 		Set<String> set=new LinkedHashSet<String>(list);
 		list=new ArrayList<>(set);
 		return list;
-	}
+		}
 	
 	@GetMapping("/realisations/{research}")
 	public List<Realisation> getRealisationsByresearch(@PathVariable String research,@RequestParam(value = "categorie") String categorie){
@@ -120,7 +130,7 @@ public class RealisationController {
 						for (String b : list3) {
 							if(b.equals(a)) {
 								list.add(list1.get(i));
-								break;}
+								;}
 						}
 					}
 					
