@@ -4,6 +4,11 @@ package com.abdo.springsecurityauthjwt.security;
 import com.abdo.springsecurityauthjwt.security.jwt.AuthEntryPointJwt;
 import com.abdo.springsecurityauthjwt.security.jwt.AuthTokenFilter;
 import com.abdo.springsecurityauthjwt.security.services.UserDétailsServiceImpl;
+
+import java.util.Arrays;
+import java.util.Collections;
+
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,15 +22,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 
 
 @Configuration
+
 @EnableGlobalMethodSecurity(
         // securedEnabled = true,
         // jsr250Enabled = true,
         prePostEnabled = true)
-public class WebSecurityConfig {
+public class WebSecurityConfig  {
     @Autowired
     UserDétailsServiceImpl userDetailsService;
 
@@ -69,6 +82,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/api/comments/**").permitAll()
                 .requestMatchers("/api/categories/**").permitAll()
+                .requestMatchers("api/addRealisation").permitAll()
+
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
@@ -77,4 +93,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+  
 }

@@ -9,6 +9,8 @@ public interface RealisationService {
 	List<Realisation> getAllRealisations();
 	Realisation getRealisation(Long id);
 	List<Realisation> getRealisationbyuser(Long user_id);
+	Realisation addRealisation(Realisation realisation);
+	
 	
 ;
 }
